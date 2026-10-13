@@ -1,0 +1,21 @@
+name: Docker headless service
+on:
+  push:
+    branches: [main, feat/docker-cainiao-service]
+    paths: ["server/**", "Dockerfile", "compose.yaml", ".dockerignore", ".github/workflows/docker.yml"]
+  pull_request:
+    paths: ["server/**", "Dockerfile", "compose.yaml", ".dockerignore", ".github/workflows/docker.yml"]
+  workflow_dispatch:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: python -m unittest discover -s server/tests -v
+      - name: Docker build
+        run: docker build -t expressassistant-headless:test .
