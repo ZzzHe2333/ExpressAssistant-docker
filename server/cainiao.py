@@ -28,7 +28,7 @@ def wap_sign(token, timestamp, data):
     return hashlib.md5(source.encode("utf-8")).hexdigest()
 
 def parse_json_response(text):
-    text = text.strip()
+    text = text.strip().rstrip(";").strip()
     if text.startswith("{"):
         return json.loads(text)
     match = re.match(r"^[\w.$]+\s*\(", text)
@@ -243,7 +243,7 @@ class Client:
             raise CainiaoError("No trace result; check account access and login status")
         obj = values[0]
         points = [{"time": str(x.get("time") or ""), "desc": str(x.get("desc") or "")}
-                  for x in (obj.get("fullTraceDetail") or []) if isinstance(x, dict)]
+                  for x in reversed(obj.get("fullTraceDetail") or []) if isinstance(x, dict)]
         goods = [{"name": str(x.get("goodsName") or ""),
                   "imageUrl": str(x.get("itemPic") or x.get("allPicUrl") or ""),
                   "quantity": x.get("goodsQuantity")}
