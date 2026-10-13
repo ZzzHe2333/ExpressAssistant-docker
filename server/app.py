@@ -185,7 +185,7 @@ def handler_for(service, key):
 
 def main():
     logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
-    if len(API_KEY) < 16 or API_KEY == "change-me":
+    if len(API_KEY) < 16 or API_KEY in ("change-me", "replace-this-with-a-long-random-token"):
         raise SystemExit("Set API_KEY to a random string at least 16 characters long")
     if INTERVAL and INTERVAL < 60:
         raise SystemExit("SYNC_INTERVAL_SECONDS must be 0 or >= 60")
