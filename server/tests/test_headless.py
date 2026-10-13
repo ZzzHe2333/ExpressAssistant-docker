@@ -3,7 +3,7 @@ import json
 import os
 import tempfile
 import unittest
-from server.cainiao import Client, CainiaoError, parse_order_list, parse_ssr, wap_sign
+from server.cainiao import Client, CainiaoError, parse_order_list, parse_ssr, parse_json_response, wap_sign
 from server.store import Store
 from server.app import Service, handler_for
 
@@ -11,6 +11,9 @@ class H5Tests(unittest.TestCase):
     def test_sign(self):
         expected = hashlib.md5(b"abc&123&12574478&{}").hexdigest()
         self.assertEqual(wap_sign("abc", "123", "{}"), expected)
+
+    def test_jsonp_semicolon(self):
+        self.assertEqual(parse_json_response('cb({"a":1});')["a"], 1)
 
     def test_order_jsonp(self):
         raw = {"ret": ["SUCCESS::OK"], "data": {"result": json.dumps({
