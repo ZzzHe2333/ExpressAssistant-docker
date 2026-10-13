@@ -3,6 +3,7 @@ import json
 import os
 import sqlite3
 import tempfile
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -19,10 +20,15 @@ class Store:
                 order_id TEXT NOT NULL, traces TEXT NOT NULL,
                 goods TEXT NOT NULL, updated_at TEXT NOT NULL)""")
 
+    @contextmanager
     def _conn(self):
         conn = sqlite3.connect(self.db_path, timeout=15)
         conn.row_factory = sqlite3.Row
-        return conn
+        try:
+            yield conn
+            conn.commit()
+        finally:
+            conn.close()
 
     def get_cookie(self):
         try:
