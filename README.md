@@ -2,6 +2,12 @@
 
 A local-first Android app that aggregates express deliveries from multiple platforms into one list, with AI daily reports, scheduled reminders, and per-package tracking notifications.
 
+## Docker / Hermes Agent (fork addition)
+
+This fork adds an optional headless Docker service with Taobao H5 package sync, Cainiao waybill query, SQLite persistence, authenticated REST API and MCP-style JSON-RPC. The Android app remains available unchanged. **Only the Taobao/Cainiao channel is ported in this version.**
+
+See [Docker deployment guide](docs/DOCKER.md) for setup, required account cookies, API security, and limitations.
+
 ## Releases
 
 - Latest: [v0.7.1](https://github.com/Halo0sama/ExpressAssistant/releases/tag/v0.7.1) (update prompt on app open + support button + fixes)

@@ -1,0 +1,10 @@
+.git
+.github
+.gradle
+app/
+screenshots/
+docs/
+*.apk
+.env
+**/__pycache__
+**/*.pyc
