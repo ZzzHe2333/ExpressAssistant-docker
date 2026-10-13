@@ -19,3 +19,18 @@ jobs:
         run: python -m unittest discover -s server/tests -v
       - name: Docker build
         run: docker build -t expressassistant-headless:test .
+
+      - name: Container HTTP smoke test
+        run: |
+          docker run -d --name expressassistant-test \
+            -e API_KEY=ci-test-token-longer-than-16-characters \
+            -e SYNC_INTERVAL_SECONDS=0 \
+            -p 127.0.0.1:8766:8766 expressassistant-headless:test
+          trap 'docker rm -f expressassistant-test || true' EXIT
+          for i in $(seq 1 20); do
+            if curl --fail --silent http://127.0.0.1:8766/health; then break; fi
+            sleep 1
+          done
+          curl --fail --silent \
+            -H 'Authorization: Bearer ci-test-token-longer-than-16-characters' \
+            http://127.0.0.1:8766/api/packages
