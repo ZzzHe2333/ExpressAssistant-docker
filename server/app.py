@@ -164,6 +164,9 @@ def handler_for(service, key):
             if body is None:
                 return
             path = urlsplit(self.path).path
+            if path not in ("/api/credentials/taobao", "/api/sync", "/api/query", "/mcp"):
+                self.send_json(404, {"error": "not found"})
+                return
             def handle():
                 if path == "/api/credentials/taobao":
                     service.store.set_cookie(body.get("cookie", ""))
