@@ -10,3 +10,8 @@ captures/
 *.apk
 *.aab
 outputs/
+.env
+*.sqlite
+*.db
+__pycache__/
+*.pyc
